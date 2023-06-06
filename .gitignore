@@ -1,1 +1,3 @@
 venv/
+sites.db
+__pycache__
