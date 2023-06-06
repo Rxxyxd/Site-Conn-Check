@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 class Database():
     def __init__(self):
@@ -9,6 +10,7 @@ class Database():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 url TEXT NOT NULL,
+                response INT,
                 status integer,
                 UNIQUE(name,url)
             )
@@ -31,7 +33,7 @@ class Database():
 
     def get_sites(self):
         self.cursor.execute('''
-            SELECT name, url, status FROM sites
+            SELECT name, url, response, status FROM sites
         ''')
         return self.cursor.fetchall()
     
@@ -43,7 +45,7 @@ class Database():
                 ''', (url, name))
         self.connection.commit()
 
-    def set_status_code(self, url, code):
+    def update_status_code(self, url, code):
         self.cursor.execute('''
             UPDATE sites
             SET status = ?
@@ -63,3 +65,15 @@ class Database():
             WHERE name = ?
         ''', (name,))
         return self.cursor.fetchone()[0]
+    
+    def delete_database(self):
+        self.connection.close()
+        os.remove('sites.db')
+
+    def update_response(self, url, response):
+        self.cursor.execute('''
+            UPDATE sites
+            SET response = ?
+            WHERE url = ?
+        ''', (response, url))
+        self.connection.commit()
