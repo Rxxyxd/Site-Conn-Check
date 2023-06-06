@@ -3,10 +3,12 @@ import os
 
 class Database():
     def __init__(self):
+        self.connection = None
+        self.cursor = None
+    
+    def __enter__(self):
         self.connection = sqlite3.connect('sites.db')
         self.cursor = self.connection.cursor()
-    
-    def create_table(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS sites (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -75,6 +77,6 @@ class Database():
             WHERE url = ?
         ''', (response, url))
 
-    def __del__(self):
+    def __exit__(self, exc_type, exc_val, exc_tb):
         self.connection.commit()
         self.connection.close()
