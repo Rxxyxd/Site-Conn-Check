@@ -39,6 +39,12 @@ class Database():
         ''')
         return self.cursor.fetchall()
     
+    def get_urls(self):
+        self.cursor.execute('''
+            SELECT url FROM sites
+        ''')
+        return self.cursor.fetchall()
+    
     def update_site(self, name, url):
         self.cursor.execute('''
                     UPDATE sites
@@ -46,12 +52,17 @@ class Database():
                     WHERE name = ?
                 ''', (url, name))
 
-    def update_status_code(self, url, code):
+    def update_status_code(self, url, code, response_time):
         self.cursor.execute('''
             UPDATE sites
             SET status = ?
             WHERE url = ?
         ''', (code, url))
+        self.cursor.execute('''
+            UPDATE sites
+            SET response = ?
+            WHERE url = ?
+        ''', (response_time, url))
 
     def get_number_of_rows(self):
         self.cursor.execute('''
