@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser(prog="main.py", description="This is a program 
 
 parser.add_argument("-s", "--sites", help="Lists all sites in database", action="store_true")
 parser.add_argument("--run", help="Adds a site to the database", action="store_true")
+parser.add_argument("-d", "--delete", help="Deletes the Database", action="store_true")
 
 subparser = parser.add_subparsers(title="command COMMAND", dest="command", help="sub-command for help")
 
@@ -28,25 +29,29 @@ update_parser = subparser.add_parser("update", help="Update a site in database")
 update_parser.add_argument("-n", "--name", help="Name of the site", required=True)
 update_parser.add_argument("-u", "--url", help="URL of the site", required=True)
 
-search_parser = subparser.add_parser("search", help="Search for a site from database")
-search_parser.add_argument("-n", "--name", help="Name of the site")
-search_parser.add_argument("-u", "--url", help="URL of the site, must start with 'https://www.'")
 
 args = parser.parse_args()
 with db as _:
     if __name__ == "__main__":
         if args.sites:
-            print(tabulate(db.get_sites_detailed(), showindex="never", headers="keys", tablefmt='psql'), end="\r")
+            print(tabulate(db.get_sites(), showindex="never", headers="keys", tablefmt='psql'), end="\r")
             print("\n")
         elif args.run:
             os.system("cls" if os.name == "nt" else "clear")
-            while True:
-                conn_check.updateDb()
-                sitesList = db.get_sites(True)
-                print(tabulate(sitesList, showindex="never", headers="keys", tablefmt='psql'), end="\r")
-                len_sites = len(sitesList.index)
-                print('\033[1A'*(len_sites+3),end="\x1b[2K")
-    
+            try:
+                while True:
+                    conn_check.updateDb()
+                    sitesList = db.get_sites(True)
+                    print(tabulate(sitesList, showindex="never", headers="keys", tablefmt='psql'), end="\r")
+                    len_sites = len(sitesList.index)
+                    print('\033[1A'*(len_sites+3),end="\x1b[2K")
+            except KeyboardInterrupt:
+                os.system("cls" if os.name == "nt" else "clear")
+                print("Exiting...")
+                
+        elif args.delete:
+            db.delete_database()
+            print("Database deleted successfully")
         elif args.command == "add":
             valid = validators.url(args.url)
             if valid:
@@ -63,21 +68,13 @@ with db as _:
                 print("Site removed successfully")
             else: 
                 print("Site not found")
-
-
-
-
-
-
-    #os.system("cls" if os.name == "nt" else "clear")
-    #with db as _:
-    #    sitesList = db.get_sites()
-
-    #while True:
-    #    conn_check.updateDb()
-    #    with db as _:
-    #        sitesList = db.get_sites()
-    #    print(tabulate(sitesList, showindex="never", headers="keys", tablefmt='psql'), end="\r")
-    #    len_sites = len(sitesList.index)
-    #    print('\033[1A'*(len_sites+3),end="\x1b[2K")
-        
+        elif args.command == "update":
+            valid = validators.url(args.url)
+            if valid:
+                success = db.update_site(args.name.capitalize(), args.url.lower())
+                if success:
+                    print("Site updated successfully")
+                else:
+                    print("Site not found")
+            else:
+                print("URL is not valid. Please enter a valid URL")

@@ -50,12 +50,15 @@ class Database():
             return False
 
     def get_sites(self, detailed=False):
-        if not detailed:
-            sites = pd.read_sql_query('SELECT name, url FROM sites', self.connection)
-            return sites
+        if not isinstance(detailed, bool):
+            raise TypeError('detailed argument must be a bool')
         if detailed:
             sites = pd.read_sql_query('SELECT name, url, response, status FROM sites', self.connection)
             return sites
+        else:
+            sites = pd.read_sql_query('SELECT name, url FROM sites', self.connection)
+            return sites
+        
 
     def get_urls(self):
         self.cursor.execute('''
@@ -64,11 +67,17 @@ class Database():
         return self.cursor.fetchall()
     
     def update_site(self, name, url):
-        self.cursor.execute('''
-                    UPDATE sites
-                    SET url = ?
-                    WHERE name = ?
-                ''', (url, name))
+        self.cursor.execute('SELECT name FROM sites WHERE name =?', (name,))
+        exists = self.cursor.fetchone()
+        if exists:
+            self.cursor.execute('''
+                        UPDATE sites
+                        SET url = ?
+                        WHERE name = ?
+                    ''', (url, name))
+            return True
+        else:
+            return False
 
     def update_status_code(self, url, code, response_time):
         self.cursor.execute('''
@@ -100,6 +109,7 @@ class Database():
         os.remove('sites.db')
 
     def update_response(self, url, response):
+
         self.cursor.execute('''
             UPDATE sites
             SET response = ?
