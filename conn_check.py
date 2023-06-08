@@ -29,12 +29,10 @@ class GetStatus():
                 with sites as db:
                     for url in urls:
                             status_code, response_time = self.getStatus(url)
-                            print(status_code, url)
                             sites.update_status_code(url, status_code, response_time)
             return multiThreadRequest, singleThreadRequest
         finally:
-            
-            print("process finished")
+            pass
 
     def run(self,multiThread=False, threadsCount=10):
         multi, single = self.updateDb()
@@ -52,6 +50,3 @@ class GetStatus():
                 thread.join()
         else:
             single()
-
-x=True
-GetStatus().run(True)

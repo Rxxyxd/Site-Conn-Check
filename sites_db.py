@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import pandas as pd
 
 class Database():
     def __init__(self):
@@ -7,7 +8,7 @@ class Database():
         self.cursor = None
     
     def __enter__(self):
-        self.connection = sqlite3.connect('sites.db')
+        self.connection = sqlite3.connect('sites.db', check_same_thread=False)
         self.cursor = self.connection.cursor()
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS sites (
@@ -34,10 +35,8 @@ class Database():
         ''', (name,))
 
     def get_sites(self):
-        self.cursor.execute('''
-            SELECT name, url, response, status FROM sites
-        ''')
-        return self.cursor.fetchall()
+        sites = pd.read_sql_query('SELECT name, url, response, status FROM sites', self.connection)
+        return sites
     
     def get_urls(self):
         self.cursor.execute('''
