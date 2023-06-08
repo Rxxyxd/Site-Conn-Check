@@ -10,7 +10,7 @@ class GetStatus():
 
     def getStatus(self, url):
         response = requests.head(url)
-        response_time = response.elapsed.total_seconds()
+        response_time = response.elapsed.total_seconds() * 1000
         return response.status_code, response_time
 
     def updateDb(self):
