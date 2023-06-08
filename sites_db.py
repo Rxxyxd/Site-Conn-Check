@@ -23,21 +23,40 @@ class Database():
         self.connection.commit()
     
     def add_site(self, name, url):
-        self.cursor.execute('''
-            INSERT INTO sites (name, url)
-            VALUES (?, ?)
-        ''', (name, url))
+        self.cursor.execute('SELECT name FROM sites WHERE name=?', (name,))
+        result_name = self.cursor.fetchone()
+        self.cursor.execute('SELECT url FROM sites WHERE url=?', (url,))
+        result_url = self.cursor.fetchone()
+
+        if result_name or result_url:
+            return False
+        if not result_url and not result_name:
+            self.cursor.execute('''
+                INSERT INTO sites (name, url)
+                VALUES (?, ?)
+            ''', (name, url))
+            return True
     
     def remove_site(self, name):
-        self.cursor.execute('''
-            DELETE FROM sites
-            WHERE name = ?
-        ''', (name,))
+        self.cursor.execute('SELECT name FROM sites WHERE name =?', (name,))
+        result = self.cursor.fetchone()
+        if result:
+            self.cursor.execute('''
+                DELETE FROM sites
+                WHERE name = ?
+            ''', (name,))
+            return True
+        else:
+            return False
 
-    def get_sites(self):
-        sites = pd.read_sql_query('SELECT name, url, response, status FROM sites', self.connection)
-        return sites
-    
+    def get_sites(self, detailed=False):
+        if not detailed:
+            sites = pd.read_sql_query('SELECT name, url FROM sites', self.connection)
+            return sites
+        if detailed:
+            sites = pd.read_sql_query('SELECT name, url, response, status FROM sites', self.connection)
+            return sites
+
     def get_urls(self):
         self.cursor.execute('''
             SELECT url FROM sites
