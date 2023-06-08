@@ -82,14 +82,9 @@ class Database():
     def update_status_code(self, url, code, response_time):
         self.cursor.execute('''
             UPDATE sites
-            SET status = ?
+            SET status = ?, response =?
             WHERE url = ?
-        ''', (code, url))
-        self.cursor.execute('''
-            UPDATE sites
-            SET response = ?
-            WHERE url = ?
-        ''', (response_time, url))
+        ''', (code, response_time, url))
 
     def get_number_of_rows(self):
         self.cursor.execute('''
