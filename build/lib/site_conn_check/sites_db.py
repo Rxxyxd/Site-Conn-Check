@@ -16,7 +16,7 @@ class Database():
                 name TEXT NOT NULL,
                 url TEXT NOT NULL,
                 response INT,
-                status integer,
+                status TEXT,
                 UNIQUE(name,url)
             )
         ''')
