@@ -19,6 +19,7 @@ Feel free to clone the repository and make any changes that works for you.
 ## Commands
 
 **NOTE: Upon adding you first site a database file will be created. Running without adding a site will likely result in errors.**
+
 This will happen everytime you delete or lose your database file.
 
  - `$ site_conn_check add -n <SiteName> -u <URL>` - Adds a new Site to the database.
