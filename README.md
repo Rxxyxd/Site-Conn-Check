@@ -6,6 +6,18 @@ A CLI program that requests the header of a website to determine its Status Code
 
 If you find any issues feel free to drop them in the issues section.
 
+## Set Up
+
+### pip
+ - `pip install Site-Conn-Check`
+ 
+### Cloning
+After cloning the repository run:
+ - `py setup.py install` 
+
+Feel free to clone the repository and make any changes that works for you.
+
+
 ## Commands
 
 **NOTE: Upon adding you first site a database file will be created**
