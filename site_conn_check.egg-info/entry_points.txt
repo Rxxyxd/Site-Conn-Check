@@ -1,2 +1,0 @@
-[console_scripts]
-site_conn_check = site_conn_check.main:main
