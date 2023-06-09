@@ -1,13 +1,19 @@
 from setuptools import setup, find_packages
+from pathlib import Path
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='site_conn_check',
-    version='1.0.1',
+    version='1.0.3',
         zip_safe=False,
     author="Joshua Abbey",
     author_email="Joshuaabbey2022@gmail.com",
     description="Package to check status code and response time of websites",
-    long_description="A CLI that requests the header of a website to determine its Status Code and response time and visualizes the data in a dataframe",
+    url="https://github.com/rxxyxd/site-conn-check",
+    long_description=long_description,
+    long_description_content_type ='text/markdown',
     packages=["site_conn_check"],
     install_requires=[
         'certifi==2023.5.7',
