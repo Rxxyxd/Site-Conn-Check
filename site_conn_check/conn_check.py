@@ -1,5 +1,5 @@
 import requests
-import sites_db
+import site_conn_check.sites_db as sites_db
 
 def getStatus(url):
     response = requests.head(url)

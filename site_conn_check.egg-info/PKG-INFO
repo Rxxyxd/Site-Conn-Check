@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: site-conn-check
+Version: 1.0.0
+Summary: Package to check status code and response time of websites
+Author: Joshua Abbey
+Author-email: Joshuaabbey2022@gmail.com
+License: LICENCE
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+License-File: LICENCE
+
+A CLI that requests the header of a website to determine its Status Code and response time and visualizes the data in a dataframe

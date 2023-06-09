@@ -1,38 +1,36 @@
 import os
 from tabulate import tabulate
-from urllib.parse import urlparse
 import argparse
 import validators
 
-import sites_db
-import conn_check
+import site_conn_check.sites_db as sites_db
+import site_conn_check.conn_check as conn_check
 
+def main():
+    db = sites_db.Database()
 
-db = sites_db.Database()
+    parser = argparse.ArgumentParser(prog="main.py", description="This is a program to retrieve the status and response time of sites in a database")
 
-parser = argparse.ArgumentParser(prog="main.py", description="This is a program to retrieve the status and response time of sites in a database")
+    parser.add_argument("-s", "--sites", help="Lists all sites in database", action="store_true")
+    parser.add_argument("--run", help="Adds a site to the database", action="store_true")
+    parser.add_argument("-d", "--delete", help="Deletes the Database", action="store_true")
 
-parser.add_argument("-s", "--sites", help="Lists all sites in database", action="store_true")
-parser.add_argument("--run", help="Adds a site to the database", action="store_true")
-parser.add_argument("-d", "--delete", help="Deletes the Database", action="store_true")
+    subparser = parser.add_subparsers(title="command COMMAND", dest="command", help="sub-command for help")
 
-subparser = parser.add_subparsers(title="command COMMAND", dest="command", help="sub-command for help")
+    add_parser = subparser.add_parser("add", help="Add a new site to database", )
+    add_parser.add_argument("-n", "--name", help="Name of the site", required=True)
+    add_parser.add_argument("-u", "--url", help="URL of the site", required=True)
 
-add_parser = subparser.add_parser("add", help="Add a new site to database", )
-add_parser.add_argument("-n", "--name", help="Name of the site", required=True)
-add_parser.add_argument("-u", "--url", help="URL of the site", required=True)
+    remove_parser = subparser.add_parser("remove", help="Remove a site from database")
+    remove_parser.add_argument("-n", "--name", help="Name of the site", required=True)
 
-remove_parser = subparser.add_parser("remove", help="Remove a site from database")
-remove_parser.add_argument("-n", "--name", help="Name of the site", required=True)
+    update_parser = subparser.add_parser("update", help="Update a site in database")
+    update_parser.add_argument("-n", "--name", help="Name of the site", required=True)
+    update_parser.add_argument("-u", "--url", help="URL of the site", required=True)
 
-update_parser = subparser.add_parser("update", help="Update a site in database")
-update_parser.add_argument("-n", "--name", help="Name of the site", required=True)
-update_parser.add_argument("-u", "--url", help="URL of the site", required=True)
-
-
-args = parser.parse_args()
-with db as _:
-    if __name__ == "__main__":
+    args = parser.parse_args()
+    with db as _:
+    
         if args.sites:
             print(tabulate(db.get_sites(), showindex="never", headers="keys", tablefmt='psql'), end="\r")
             print("\n")
@@ -78,3 +76,6 @@ with db as _:
                     print("Site not found")
             else:
                 print("URL is not valid. Please enter a valid URL")
+
+if __name__ == "__main__":
+    main()
