@@ -1,4 +1,5 @@
-![GitHub](https://img.shields.io/github/license/rxxyxd/Site-Conn-Check) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Rxxyxd/Site-Conn-Check)
+![GitHub](https://img.shields.io/github/license/rxxyxd/Site-Conn-Check) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Rxxyxd/Site-Conn-Check) ![GitHub all releases](https://img.shields.io/github/downloads/rxxyxd/Site-Conn-Check/total)
+![PyPI](https://img.shields.io/pypi/v/site-conn-check)
 # Site-Conn-Check
 A CLI program that requests the header of a website to determine its Status Code and response time and visualizes the data in a static and dynamic table.
 
