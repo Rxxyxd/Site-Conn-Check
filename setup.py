@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='site_conn_check',
-    version='1.0.0',
+    version='1.0.1',
         zip_safe=False,
     author="Joshua Abbey",
     author_email="Joshuaabbey2022@gmail.com",
