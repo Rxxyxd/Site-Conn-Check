@@ -16,7 +16,6 @@ After cloning to build the project just run:
  - `$ pip install <.whl file>`
 
 required packages:
- - Wheel
  - Build
 
 
