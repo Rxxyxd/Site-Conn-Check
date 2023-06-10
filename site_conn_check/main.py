@@ -3,8 +3,8 @@ from tabulate import tabulate
 import argparse
 import validators
 
-import site_conn_check.sites_db as sites_db
-import site_conn_check.conn_check as conn_check
+import sites_db
+import conn_check
 
 def main():
     db = sites_db.Database()

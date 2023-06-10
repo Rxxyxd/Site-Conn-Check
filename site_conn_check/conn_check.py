@@ -1,5 +1,5 @@
 import requests
-import site_conn_check.sites_db as sites_db
+import sites_db
 
 def getStatus(url):
     try:
@@ -21,4 +21,5 @@ def updateDb():
             if status_code is not None:
                 sites.update_status_code(url, status_code, response_time)
 
+updateDb()
 
