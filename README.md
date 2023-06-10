@@ -9,11 +9,15 @@ If you find any issues feel free to drop them in the issues section.
 ### pip
  - `pip install Site-Conn-Check`
  
-### Cloning
-After cloning the repository run:
- - `py setup.py install` 
+### Clone and build
 
-Feel free to clone the repository and make any changes that works for you.
+After cloning to build the project just run:
+ - `$ py -m build --wheel`
+ - `$ pip install <.whl file>`
+
+required packages:
+ - Wheel
+ - Build
 
 
 ## Commands
